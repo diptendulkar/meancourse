@@ -4,5 +4,10 @@
 }
 mat-expansion-panel{
   background-color: lightpink;
+  margin-top: 1rem;
+  box-shadow: lightsteelblue;
 
+}
+.info-text{
+  text-align: center;
 }
