@@ -1,0 +1,8 @@
+:host{
+  display: block;
+  margin-top: 1rem;
+}
+mat-expansion-panel{
+  background-color: lightpink;
+
+}
