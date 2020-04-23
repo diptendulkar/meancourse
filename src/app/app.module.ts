@@ -6,6 +6,7 @@ import { MatCardModule} from '@angular/material/card';
 import { MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 
@@ -29,7 +30,7 @@ import { PostListComponent } from './posts/post-list/post-list.component';
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatInputModule, MatCardModule,MatButtonModule,MatToolbarModule,MatExpansionModule
+    MatInputModule, MatCardModule,MatButtonModule,MatToolbarModule,MatExpansionModule,MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
