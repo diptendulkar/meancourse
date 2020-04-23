@@ -15,7 +15,7 @@ enteredContent='';
 onAddPost(){
   const post ={
     title: this.enteredTitle ,
-    content: this.enteredTitle
+    content: this.enteredContent
   };
   this.postCreated.emit(post);
 
