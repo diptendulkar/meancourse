@@ -1,6 +1,8 @@
 
 <mat-card>
   <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+
+
     <mat-form-field>
       <mat-label>Enter Title</mat-label>
       <input matInput type="text" name="title" ngModel required minlength="3" #title="ngModel" placeholder="Enter Title">
