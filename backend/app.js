@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
 
-// this is middleware Optional
+// this is middleware
 app.use((req, res, next) => {
 
+  res.setHeader("Access-Control-Allow-Origin" , "*");
+  res.setHeader("Access-Control-Allow-Header" , "Origin, X--requested-With, Content-Type, Accept");
+  res.setHeader("Access-Control-Allow-Methods" , "GET, POST, PATCH, DELETE, OPTIONS");
   console.log('First midleware');
   next();
 });
