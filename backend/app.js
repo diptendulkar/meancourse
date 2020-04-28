@@ -1,5 +1,11 @@
 const express = require('express');
+const bodyparser = require("body-parser");
+
+
 const app = express();
+
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended : false}));
 
 // this is middleware
 app.use((req, res, next) => {
@@ -9,6 +15,15 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods" , "GET, POST, PATCH, DELETE, OPTIONS");
   console.log('First midleware');
   next();
+});
+
+app.post("/api/posts", (req, res,next) =>{
+
+  const posts = req.body;
+  console.log(posts);
+  res.status(201).json({
+  message: 'Post Added sucussfully !!'
+});
 });
 
 app.use('/api/posts',(req, res, next) => {
