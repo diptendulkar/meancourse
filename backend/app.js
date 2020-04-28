@@ -10,7 +10,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
 
-  res.send('Hello from Express ! SERVER IS RUNNING');
+  res.send('Hello from Express ! SERVER IS RUNNING ...');
 });
 
 module.exports = app;
