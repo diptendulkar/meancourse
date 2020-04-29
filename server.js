@@ -10,7 +10,6 @@ const normalizePort = val => {
   }
 
   if(port>=0){
-    //port number
     return port;
   }
 
