@@ -1,7 +1,8 @@
 import {Post} from './post.model';
 import { Injectable } from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, from} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'}) // to add the service/ Provider into app.module
@@ -14,9 +15,20 @@ export class PostsService{
 
   getPosts(){
 
-   this.http.get<{message: string, posts: Post[]}>('http://localhost:3000/api/posts')
-   .subscribe((postData) => {
-      this.posts = postData.posts;
+   this.http.get<{message: string, posts: any }>('http://localhost:3000/api/posts')
+
+   //Pipe map is used to map db '_id' column to model class 'id'
+   .pipe(map((postData) => {
+      return postData.posts.map(post => {
+        return{
+          title : post.title,
+          content : post.content,
+          id : post._id // maping the table columns
+        };
+      });
+   }))
+   .subscribe(transformedPosts => {
+      this.posts = transformedPosts;
       this.postsUpdated.next([...this.posts]);
    });
   }
