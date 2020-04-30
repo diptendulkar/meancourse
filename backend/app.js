@@ -32,12 +32,14 @@ app.post("/api/posts", (req, res,next) =>{
     title : req.body.title,
     content : req.body.content
   });
-
-  post.save(); // save  data to DB
-  console.log(post);
-  res.status(201).json({
-  message: 'Post Added sucussfully !!'
-});
+// save  data to DB
+  post.save().then( createdPost =>{
+    console.log(createdPost);
+    res.status(201).json({
+      message: 'Post Added sucussfully !!',
+      postId: createdPost._id
+    });
+  });
 });
 
 app.get('/api/posts',(req, res, next) => {
