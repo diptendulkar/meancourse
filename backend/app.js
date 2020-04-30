@@ -51,5 +51,13 @@ app.get('/api/posts',(req, res, next) => {
   });
   });
 
+  app.delete("/api/posts/:id", (req, res, next) => {
+
+    console.log(req.params.id);
+    MongoPost.deleteOne({_id : req.params.id}).then( result => {
+      console.log(result);
+    });
+    res.status(200).json({message : " Post Deleted !!"});
+  });
 
 module.exports = app;
