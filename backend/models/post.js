@@ -5,4 +5,4 @@ title: { type: String, require : true},
 content: { type: String, require : true}
 });
 
-model.exports = mongoose.model('post', postSchema);
+module.exports = mongoose.model('Post', postSchema);
