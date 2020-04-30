@@ -28,12 +28,12 @@ app.use((req, res, next) => {
 
 app.post("/api/posts", (req, res,next) =>{
 
-  const post = new Post({
+  const Post = new Post({
     title : req.body.title,
     content : req.body.content
   });
 
-  post.save(); // save  data to DB
+  Post.save(); // save  data to DB
   console.log(posts);
   res.status(201).json({
   message: 'Post Added sucussfully !!'
@@ -41,16 +41,15 @@ app.post("/api/posts", (req, res,next) =>{
 });
 
 app.get('/api/posts',(req, res, next) => {
-
-  const posts =[
-    {id: 'fad123', title:'First Server-side post', content:'this  First code is comming from server'},
-    {id: 'fad124', title:'Second Server-side post', content:'this Second code is comming from server'}
-  ];
-
-  res.status(200).json({
-    message: 'post fetched sucessfull !',
-    posts: posts
+  // fetch all data
+  Post.find().then( documents => {
+    console.log(documents) ;  // logs all data
+    res.status(200).json({
+      message: 'post fetched sucessfull !',
+      posts: documents
+    });
   });
-});
+  });
+
 
 module.exports = app;
