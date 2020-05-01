@@ -13,6 +13,7 @@ export class PostsService{
 
   constructor(private http: HttpClient) {}
 
+  // to fetch records from DB
   getPosts(){
 
    this.http.get<{message: string, posts: any }>('http://localhost:3000/api/posts')
@@ -36,6 +37,8 @@ export class PostsService{
   getPostListener(){
     return this.postsUpdated.asObservable();
   }
+
+  // to add records into DB
   addPost(title: string, content: string){
     const post: Post = {id: null,title: title, content:content};
     this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
