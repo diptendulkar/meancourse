@@ -4,12 +4,12 @@ const mongoose = require("mongoose");
 const MongoPost = require('./models/post');
 const app = express();
 
-mongoose.connect("mongodb+srv://max:LafuODIwfWSStFBU@cluster0-poocn.mongodb.net/node-angular?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://max:LafuODIwfWSStFBU@cluster0-poocn.mongodb.net/node-angular?retryWrites=true&w=majority", { useNewUrlParser: true , useUnifiedTopology: true})
     .then(()=> {
       console.log("Connected to Database");
     })
-    .catch(() => {
-      console.log("Failed to connect to Database !!");
+    .catch((e) => {
+      console.log("Failed to connect to Database !!" + e.message);
     });
 
 
