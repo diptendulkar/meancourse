@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
   res.setHeader("Access-Control-Allow-Origin" , "*");
   res.setHeader("Access-Control-Allow-Headers" , "Origin, X--requested-With, Content-Type, Accept");
-  res.setHeader("Access-Control-Allow-Methods" , "GET, POST, PATCH, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods" , "GET, POST, PATCH, PUT,DELETE, OPTIONS");
   console.log('First midleware');
   next();
 });
@@ -51,6 +51,21 @@ app.get('/api/posts',(req, res, next) => {
       posts: documents
     });
   });
+  });
+
+  app.put("/api/posts/:id", (req, res, next) => {
+
+    const post = new MongoPost({
+      _id : req.body.id,
+      title : req.body.title,
+      content : req.body.content
+    });
+
+    MongoPost.updateOne({_id : req.params.id}, post).then( result => {
+      console.log(result);
+      res.status(200).json({ message: 'Updated Successful !!'});
+    });
+
   });
 
   app.delete("/api/posts/:id", (req, res, next) => {
