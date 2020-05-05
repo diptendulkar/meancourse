@@ -20,15 +20,18 @@ export class PostListComponent implements OnInit
   // ]
 
 posts : Post[]= [];
+isLoading = false;
 private postsSub: Subscription;
 
   constructor(public postsService: PostsService) {}
 
   ngOnInit(){
+    this.isLoading=true;
   this.postsService.getPosts();
   this.postsSub = this.postsService.getPostListener()
     .subscribe((posts: Post[]) =>{
     this.posts = posts;
+    this.isLoading=false;
   });
 
   }

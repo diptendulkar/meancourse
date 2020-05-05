@@ -7,6 +7,7 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressSpinnerModule}  from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,7 +31,7 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     BrowserAnimationsModule,
     MatInputModule, MatCardModule,MatButtonModule,MatToolbarModule,MatExpansionModule,MatFormFieldModule,
-    HttpClientModule
+    HttpClientModule, MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

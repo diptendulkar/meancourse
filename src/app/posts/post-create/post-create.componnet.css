@@ -13,3 +13,6 @@ button{
   color: ivory;
   margin-left: 10px;
 }
+mat-spinner{
+  margin: auto;
+}

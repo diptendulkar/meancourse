@@ -11,3 +11,6 @@ mat-expansion-panel{
 .info-text{
   text-align: center;
 }
+mat-spinner{
+  margin: auto;
+}
