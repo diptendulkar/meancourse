@@ -27,23 +27,13 @@ const storage = multer.diskStorage({
 });
 
 
-// this is middleware
-router.use((req, res, next) => {
-
-  res.setHeader("Access-Control-Allow-Origin" , "*");
-  res.setHeader("Access-Control-Allow-Headers" , "Origin, X--requested-With, Content-Type, Accept");
-  res.setHeader("Access-Control-Allow-Methods" , "GET, POST, PATCH, PUT,DELETE, OPTIONS");
-  console.log('First midleware');
-  next();
-});
-
 router.post("", multer({storage: storage}).single("image"),(req, res,next) =>{
 
   const url = req.protocol + '://' + req.get("host");
   const post = new MongoPost({
     title : req.body.title,
     content : req.body.content,
-    imagePath: url + "/images" + req.file.filename
+    imagePath: url + "/images/" + req.file.filename
   });
 // save  data to DB
   post.save().then( createdPost =>{

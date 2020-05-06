@@ -2,6 +2,7 @@ const express = require('express');
 const bodyparser = require("body-parser");
 const mongoose = require("mongoose");
 const postsRoutes = require ("./routes/posts");
+const path = require("path");
 const app = express();
 
 mongoose.connect("mongodb+srv://max:LafuODIwfWSStFBU@cluster0-poocn.mongodb.net/node-angular?retryWrites=true&w=majority", { useNewUrlParser: true , useUnifiedTopology: true})
@@ -15,6 +16,16 @@ mongoose.connect("mongodb+srv://max:LafuODIwfWSStFBU@cluster0-poocn.mongodb.net/
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended : false}));
+app.use("/images", express.static(path.join("backend/images")));
+// this is middleware
+app.use((req, res, next) => {
+
+  res.setHeader("Access-Control-Allow-Origin" , "*");
+  res.setHeader("Access-Control-Allow-Headers" , "Origin, X--requested-With, Content-Type, Accept");
+  res.setHeader("Access-Control-Allow-Methods" , "GET, POST, PATCH, PUT,DELETE, OPTIONS");
+  console.log('First midleware');
+  next();
+});
 
 app.use("/api/posts",postsRoutes);
 
