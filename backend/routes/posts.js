@@ -37,7 +37,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post("", multer(storage).single("image"),(req, res,next) =>{
+router.post("", multer({storage: storage}).single("image"),(req, res,next) =>{
 
   const post = new MongoPost({
     title : req.body.title,

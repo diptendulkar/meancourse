@@ -45,13 +45,18 @@ export class PostsService{
   }
 
   // to add records into DB
-  addPost(title: string, content: string){
+  addPost(title: string, content: string, image: File){
     const post: Post = {id: null,title: title, content:content};
-    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
+    const postData = new FormData();
+    postData.append("title", title);
+    postData.append("content", content);
+    postData.append("image", image, title);
+
+    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', postData)
     .subscribe((responsedata) => {
       console.log(responsedata.message);
-      const id = responsedata.postId;
-      post.id = id;
+      const post: Post = {id: responsedata.postId, title: title, content: content};
+
       this.posts.push(post);
       this.postsUpdated.next([...this.posts]);
       this.router.navigate(["/"]);
