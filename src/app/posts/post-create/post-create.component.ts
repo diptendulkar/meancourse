@@ -18,6 +18,7 @@ enteredContent='';
 post : Post;
 isLoading = false;
 form: FormGroup;
+imagePreview : string | ArrayBuffer; // either string or Arraybuffer
 
 private mode ='create';
 private postId : string;
@@ -75,9 +76,11 @@ onSavePost(){
     const file = (event.target as HTMLInputElement ).files[0];
     this.form.patchValue({image: file});
     this.form.get('image').updateValueAndValidity();
-    console.log(file);
-    console.log(this.form);
-
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
 
   }
 }
