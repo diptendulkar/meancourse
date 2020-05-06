@@ -25,7 +25,8 @@ export class PostsService{
         return{
           title : post.title,
           content : post.content,
-          id : post._id // maping the table columns
+          id : post._id ,// maping the table columns
+          imagePath: post.imagePath
         };
       });
    }))
@@ -46,16 +47,16 @@ export class PostsService{
 
   // to add records into DB
   addPost(title: string, content: string, image: File){
-    const post: Post = {id: null,title: title, content:content};
+    const post: Post = {id: null,title: title, content:content, imagePath: null};
     const postData = new FormData();
     postData.append("title", title);
     postData.append("content", content);
     postData.append("image", image, title);
 
-    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', postData)
+    this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
     .subscribe((responsedata) => {
       console.log(responsedata.message);
-      const post: Post = {id: responsedata.postId, title: title, content: content};
+      const post: Post = {id: responsedata.post.id, title: title, content: content, imagePath: responsedata.post.imagePath};
 
       this.posts.push(post);
       this.postsUpdated.next([...this.posts]);
@@ -65,7 +66,7 @@ export class PostsService{
   }
 
 updatePost(id: string, title : string, content: string){
-  const post: Post ={ id: id, title: title, content:content};
+  const post: Post ={ id: id, title: title, content:content, imagePath: null};
   this.http
       .put('http://localhost:3000/api/posts/' + id, post)
       .subscribe( response => {
