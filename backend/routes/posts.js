@@ -1,8 +1,30 @@
 const express = require("express");
+const multer =  require('multer');
 
 const MongoPost = require('../models/post');
 const router = express.Router();
 
+const MIME_TYPE_MAP ={
+'image/png': 'png',
+'image/jpeg': 'jpeg',
+'image/jpg': 'jpg',
+};
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let err = new Error("Invalid mime type");
+    if(isValid){
+      err = null;
+    }
+
+    callback(err,"backend/images");
+  },
+  filename: (req, file, callback) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const extension = MIME_TYPE_MAP[file.mimetype];
+    callback(null,name + '-' + Date.now()+'.'+extension);
+  }
+});
 
 
 // this is middleware
@@ -15,7 +37,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post("", (req, res,next) =>{
+router.post("", multer(storage).single("image"),(req, res,next) =>{
 
   const post = new MongoPost({
     title : req.body.title,
