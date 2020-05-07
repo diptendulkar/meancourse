@@ -51,7 +51,16 @@ router.post("", multer({storage: storage}).single("image"),(req, res,next) =>{
 
 router.get('',(req, res, next) => {
   // fetch all data
-  MongoPost.find().then( documents => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = MongoPost.find();
+
+  if( pageSize && currentPage)
+  {
+    postQuery.skip(pageSize * (currentPage -1))
+    .limit(pageSize);
+  }
+  postQuery.then( documents => {
     //console.log(documents) ;  // logs all data
     res.status(200).json({
       message: 'post fetched sucessfull !',
@@ -59,6 +68,8 @@ router.get('',(req, res, next) => {
     });
   });
   });
+
+
 // to edit an existing post
   router.put("/:id", multer({storage: storage}).single("image"), (req, res, next) => {
     console.log(req.file);
