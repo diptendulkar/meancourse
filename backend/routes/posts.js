@@ -54,19 +54,25 @@ router.get('',(req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const postQuery = MongoPost.find();
-
+  let fetchedPosts;
   if( pageSize && currentPage)
   {
     postQuery.skip(pageSize * (currentPage -1))
     .limit(pageSize);
   }
   postQuery.then( documents => {
-    //console.log(documents) ;  // logs all data
-    res.status(200).json({
-      message: 'post fetched sucessfull !',
-      posts: documents
-    });
+    fetchedPosts = documents;
+   return MongoPost.count();
+  })
+  .then(count => {
+  //console.log(documents) ;  // logs all data
+  res.status(200).json({
+    message: 'post fetched sucessfull !',
+    posts: fetchedPosts,
+    maxPosts: count
   });
+});
+
   });
 
 

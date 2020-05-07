@@ -22,9 +22,9 @@ export class PostListComponent implements OnInit
 
 posts : Post[]= [];
 isLoading = false;
-totalPosts = 10;
+totalPosts = 0;
 postPerPage= 2;
-currentpage =1;
+currentPage =1;
 pageSizeOptions = [1,2,5,10];
 private postsSub: Subscription;
 
@@ -34,24 +34,29 @@ private postsSub: Subscription;
     this.isLoading=true;
   this.postsService.getPosts(this.postPerPage,1);
   this.postsSub = this.postsService.getPostListener()
-    .subscribe((posts: Post[]) =>{
-    this.posts = posts;
+    .subscribe((postData: {posts: Post[], postCount: number}) =>{
+    this.posts = postData.posts;
+    this.totalPosts = postData.postCount;
     this.isLoading=false;
   });
 
   }
 
   onDelete(postId : string){
-    this.postsService.deletePost(postId);
+    this.isLoading=true;
+    this.postsService.deletePost(postId).subscribe( () => {
+      this.postsService.getPosts(this.postPerPage, this.currentPage);
+    });
   }
   ngOnDestroy(){
     this.postsSub.unsubscribe();  // to prevent memory leaks
   }
 
   onChangePage(pageData : PageEvent){
+    this.isLoading=true;
     console.log(pageData);
-    this.currentpage = pageData.pageIndex +1; // its start with 0 so added +1
+    this.currentPage = pageData.pageIndex +1; // its start with 0 so added +1
     this,this.postPerPage = pageData.pageSize;
-    this.postsService.getPosts(this.postPerPage,this.currentpage);
+    this.postsService.getPosts(this.postPerPage,this.currentPage);
   }
 }
