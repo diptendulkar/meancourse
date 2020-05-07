@@ -1,0 +1,14 @@
+mat-form-field,
+input{
+
+  width: 100%;
+  margin: 10px;
+}
+
+button{
+  color: ivory;
+  margin-left: 10px;
+}
+mat-spinner{
+  margin: auto;
+}
