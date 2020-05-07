@@ -24,6 +24,7 @@ posts : Post[]= [];
 isLoading = false;
 totalPosts = 10;
 postPerPage= 2;
+currentpage =1;
 pageSizeOptions = [1,2,5,10];
 private postsSub: Subscription;
 
@@ -31,7 +32,7 @@ private postsSub: Subscription;
 
   ngOnInit(){
     this.isLoading=true;
-  this.postsService.getPosts();
+  this.postsService.getPosts(this.postPerPage,1);
   this.postsSub = this.postsService.getPostListener()
     .subscribe((posts: Post[]) =>{
     this.posts = posts;
@@ -49,5 +50,8 @@ private postsSub: Subscription;
 
   onChangePage(pageData : PageEvent){
     console.log(pageData);
+    this.currentpage = pageData.pageIndex +1; // its start with 0 so added +1
+    this,this.postPerPage = pageData.pageSize;
+    this.postsService.getPosts(this.postPerPage,this.currentpage);
   }
 }

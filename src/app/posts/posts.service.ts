@@ -15,9 +15,10 @@ export class PostsService{
   constructor(private http: HttpClient, private  router: Router) {}
 
   // to fetch records from DB
-  getPosts(){
+  getPosts(postPerPage: number, currentPage: number){
+    const queryParams = '?pagesize='+postPerPage+'&page='+currentPage;
 
-   this.http.get<{message: string, posts: any }>('http://localhost:3000/api/posts')
+   this.http.get<{message: string, posts: any }>('http://localhost:3000/api/posts' + queryParams)
 
    //Pipe map is used to map db '_id' column to model class 'id'
    .pipe(map((postData) => {
