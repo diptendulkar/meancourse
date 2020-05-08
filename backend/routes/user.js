@@ -37,28 +37,35 @@ router.post("/signup", (req, res, next) => {
 
 //Login
 router.post("/login", (req, res, next) => {
+  let fetchedUser;
 MongoUser.findOne({ email: req.body.email})
   .then(user => {
     if(!user){
       return res.status(401).json({
-        message: "Authentication Failed !"
+        message: "Authentication Failed wrong email !"
       });
     }
-    bcrypt.compare(req.body.password, user.password); // compair has password
+ fetchedUser = user; // if email exist the mongo return user obj
+    return bcrypt.compare(req.body.password, fetchedUser.password); // compair has password
   })
   .then(result => {
+    console.log("pass comp: " + result);
     if(!result){
       return res.status(401).json({
-        message: "Authentication Failed !"
+        message: "Authentication Failed  wrong password!"
       });
     }
     // Valid User - create JSon Web token - JWT
+    console.log("fetchedUser: " + fetchedUser);
     const token = jwt.sign(
-      {email: user.email, userId: user._id},
+      {email: fetchedUser.email, userId: fetchedUser._id},
        "diptendu_password",
        {expiresIn: "1h"} // expires in one hour
        );
-
+       console.log("token" + token);
+      res.status(200).json({
+        token: token  // send the token to forntend
+      });
   })
   .catch(err => {
     return res.status(401).json({
