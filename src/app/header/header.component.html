@@ -3,14 +3,17 @@
     <a routerLink="/" routerLinkActive="mat-accent">My Message</a>
     </span>
     <ul>
-      <li>
-        <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
+      <li *ngIf="userIsAuthenticated">
+        <a mat-button  routerLink="/create" routerLinkActive="mat-accent">New Post</a>
       </li>
-      <li>
+      <li *ngIf="!userIsAuthenticated">
         <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
       </li>
-      <li>
+      <li *ngIf="!userIsAuthenticated">
         <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+      </li>
+      <li *ngIf="userIsAuthenticated">
+        <button mat-button >Logout</button>
       </li>
     </ul>
 </mat-toolbar>
