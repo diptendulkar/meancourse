@@ -45,7 +45,7 @@ userIsAuthenticated = false;
         this.isLoading=false;
       });
 
-      this.userIsAuthenticated =  this.authService.getIsAuthenticated();
+      this.userIsAuthenticated = this.authService.getIsAuthenticated();
       this.authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
