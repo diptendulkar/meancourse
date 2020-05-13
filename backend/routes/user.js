@@ -62,9 +62,10 @@ MongoUser.findOne({ email: req.body.email})
           "diptendu_password", // secret private key
           {expiresIn: "1h"} // expires in one hour
           );
-          console.log("token" + token);
+          console.log("token = " + token);
           res.status(200).json({
-            token: token  // send the token to forntend
+            token: token,  // send the token to forntend
+            message : " token generate sucessfull"
           });
   })
   .catch(err => {

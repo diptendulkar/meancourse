@@ -9,7 +9,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressSpinnerModule}  from '@angular/material/progress-spinner';
 import {MatPaginatorModule}  from '@angular/material/paginator';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +19,7 @@ import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 
 
@@ -38,7 +39,8 @@ import { SignupComponent } from './auth/signup/signup.component';
     MatInputModule, MatCardModule,MatButtonModule,MatToolbarModule,MatExpansionModule,MatFormFieldModule,
     HttpClientModule, MatProgressSpinnerModule, ReactiveFormsModule, MatPaginatorModule, FormsModule
   ],
-  providers: [],
+  // multi true = dont replace existing interceptors with user class
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
