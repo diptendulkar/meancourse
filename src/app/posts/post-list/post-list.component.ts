@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {Post} from '../post.model';
 import {PostsService} from  '../posts.service';
 import { PageEvent } from '@angular/material/paginator';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -11,8 +12,7 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrls:['./post-list.component.css']
 
 })
-export class PostListComponent implements OnInit
-{
+export class PostListComponent implements OnInit, OnDestroy{
 
   // posts= [
   //   {title:'First Post', content: ' This is First post content'},
@@ -28,19 +28,42 @@ currentPage =1;
 pageSizeOptions = [1,2,5,10];
 private postsSub: Subscription;
 
-  constructor(public postsService: PostsService) {}
+private authListenerSubs: Subscription;
+userIsAuthenticated = false;
+
+  constructor(public postsService: PostsService,  private authService : AuthService) {}
 
   ngOnInit(){
-    this.isLoading=true;
-  this.postsService.getPosts(this.postPerPage,1);
-  this.postsSub = this.postsService.getPostListener()
-    .subscribe((postData: {posts: Post[], postCount: number}) =>{
-    this.posts = postData.posts;
-    this.totalPosts = postData.postCount;
-    this.isLoading=false;
-  });
+
+
+      this.isLoading=true;
+      this.postsService.getPosts(this.postPerPage,1);
+      this.postsSub = this.postsService.getPostListener()
+        .subscribe((postData: {posts: Post[], postCount: number}) =>{
+        this.posts = postData.posts;
+        this.totalPosts = postData.postCount;
+        this.isLoading=false;
+      });
+
+      this.userIsAuthenticated =  this.authService.getIsAuthenticated();
+      this.authListenerSubs = this.authService
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
+
+    });
+
 
   }
+
+
+  ngOnDestroy(){
+    this.postsSub.unsubscribe();  // to prevent memory leaks
+    this.authListenerSubs.unsubscribe();
+  }
+
+
+
 
   onDelete(postId : string){
     this.isLoading=true;
@@ -48,9 +71,7 @@ private postsSub: Subscription;
       this.postsService.getPosts(this.postPerPage, this.currentPage);
     });
   }
-  ngOnDestroy(){
-    this.postsSub.unsubscribe();  // to prevent memory leaks
-  }
+
 
   onChangePage(pageData : PageEvent){
     this.isLoading=true;
