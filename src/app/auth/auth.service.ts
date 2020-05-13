@@ -11,6 +11,7 @@ export class AuthService {
 
   private isAuthenticated = false;
   private token: string;
+  private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router){}
@@ -47,6 +48,11 @@ export class AuthService {
       const token = response.token;
       this.token = token;
       if(token){
+        const expiresInDuration = response.expiresIn;
+       this.tokenTimer =  setTimeout( () => {
+          this.logout();
+        }, expiresInDuration * 1000); // in miliseconds
+
         this.isAuthenticated = true;
         this.authStatusListener.next(true);
         this.router.navigate(['/']);  // redirecting to message list page
@@ -59,7 +65,9 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    clearTimeout(this.tokenTimer);
     this.router.navigate(['/']); // redirecting to message list page
+
 
   }
 

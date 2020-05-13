@@ -65,7 +65,8 @@ MongoUser.findOne({ email: req.body.email})
           console.log("token = " + token);
           res.status(200).json({
             token: token,  // send the token to forntend
-            message : " token generate sucessfull"
+            message : " token generate sucessfull",
+            expiresIn: 3600 // in seconds
           });
   })
   .catch(err => {
