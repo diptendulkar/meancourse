@@ -47,12 +47,13 @@ export class PostsService{
 
 //fetch post based on id  from server
   getPost(id : string){
-    return this.http.get<{_id: string, title: string, content: string,imagePath: string} >('http://localhost:3000/api/posts/' + id);
+    return this.http.get<{_id: string, title: string, content: string,imagePath: string, creator: string} >
+    ('http://localhost:3000/api/posts/' + id);
   }
 
   // to add records into DB
   addPost(title: string, content: string, image: File){
-    const post: Post = {id: null,title: title, content:content, imagePath: null};
+   // const post: Post = {id: null,title: title, content:content, imagePath: null};
     const postData = new FormData();
     postData.append("title", title);
     postData.append("content", content);
@@ -79,7 +80,8 @@ updatePost(id: string, title : string, content: string, image: File | string){
     id: id,
     title: title,
     content: content,
-    imagePath: image
+    imagePath: image,
+    creator: null
    };
  }
   this.http
