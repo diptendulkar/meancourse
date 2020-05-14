@@ -30,6 +30,7 @@ private postsSub: Subscription;
 
 private authListenerSubs: Subscription;
 userIsAuthenticated = false;
+userId: string;
 
   constructor(public postsService: PostsService,  private authService : AuthService) {}
 
@@ -38,6 +39,7 @@ userIsAuthenticated = false;
 
       this.isLoading=true;
       this.postsService.getPosts(this.postPerPage,1);
+      this.userId = this.authService.getUserId();
       this.postsSub = this.postsService.getPostListener()
         .subscribe((postData: {posts: Post[], postCount: number}) =>{
         this.posts = postData.posts;
@@ -50,6 +52,7 @@ userIsAuthenticated = false;
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
 
     });
 
