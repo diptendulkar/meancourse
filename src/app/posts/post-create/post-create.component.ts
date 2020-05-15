@@ -1,9 +1,11 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Post } from '../post.model';
 import { mimeType } from './mime-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 
@@ -12,7 +14,7 @@ import { mimeType } from './mime-type.validator';
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.componnet.css']
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
 
 enteredTitle='';
 enteredContent='';
@@ -23,10 +25,15 @@ imagePreview : string | ArrayBuffer; // either string or Arraybuffer
 
 private mode ='create';
 private postId : string;
+private authStatusSub: Subscription;
 
+constructor(public postsService: PostsService, public route: ActivatedRoute, private authService: AuthService) {}
 
 ngOnInit(){
 
+  this.authStatusSub =  this.authService.getAuthStatusListener().subscribe( authStatus => {
+    this.isLoading =  false;
+  });
   //initilize the Reactive form ( new approach)
   this.form = new FormGroup({
     'title' : new FormControl(null,{
@@ -54,7 +61,7 @@ ngOnInit(){
       }
   });
 }
-constructor(public postsService: PostsService, public route: ActivatedRoute) {}
+
 
 onSavePost(){
   if(this.form.invalid)
@@ -83,5 +90,9 @@ onSavePost(){
     };
     reader.readAsDataURL(file);
 
+  }
+
+  ngOnDestroy(){
+    this.authStatusSub.unsubscribe();
   }
 }
