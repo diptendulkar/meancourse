@@ -8,7 +8,7 @@ try{
   next();
 }catch(error){
   res.status(401).json({
-    message: "Authorization failed"
+    message: "You are not Authenticated !!"
   });
 }
 

@@ -72,6 +72,8 @@ userId: string;
     this.isLoading=true;
     this.postsService.deletePost(postId).subscribe( () => {
       this.postsService.getPosts(this.postPerPage, this.currentPage);
+    }, () => {
+      this.isLoading= false;
     });
   }
 
