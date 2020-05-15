@@ -38,9 +38,12 @@ export class AuthService {
 
     this.http.post("http://localhost:3000/api/user/signup", authData)
     .subscribe( response => {
-      console.log(response);
-      this.router.navigate(['/']);  // redirecting to message list page
-    });
+      //console.log(response);
+      this.router.navigate(['/login']);  // redirecting to login page
+    }, error => {
+      this.authStatusListener.next(false);
+    }
+    );
   }
 
   login(email: string, password: string){
@@ -67,6 +70,8 @@ export class AuthService {
         this.router.navigate(['/']);  // redirecting to message list page
       }
 
+    }, error => {
+      this.authStatusListener.next(false);
     });
   }
 
