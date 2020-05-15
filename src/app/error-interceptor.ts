@@ -17,9 +17,15 @@ constructor(private dialog: MatDialog) {}
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        let errMessage =" An Unknown Error Occurred !!";
+        if(error.error.message){
+          errMessage = error.error.message;
+        }
         // console.log(error);
-        // alert(error.error.message);
-        this.dialog.open(ErrorComponent);
+       //  alert(error.error.message);
+        this.dialog.open(ErrorComponent, {
+          data: {message: errMessage}
+        });
         return throwError(error);
       })
     );
