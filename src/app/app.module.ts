@@ -11,6 +11,7 @@ import {MatProgressSpinnerModule}  from '@angular/material/progress-spinner';
 import {MatPaginatorModule}  from '@angular/material/paginator';
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -31,20 +33,22 @@ import { ErrorInterceptor } from './error-interceptor';
     HeaderComponent,
     PostListComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatInputModule, MatCardModule,MatButtonModule,MatToolbarModule,MatExpansionModule,MatFormFieldModule,
-    HttpClientModule, MatProgressSpinnerModule, ReactiveFormsModule, MatPaginatorModule, FormsModule
+    HttpClientModule, MatProgressSpinnerModule, ReactiveFormsModule, MatPaginatorModule, FormsModule, MatDialogModule
   ],
   // multi true = dont replace existing interceptors with user class
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }
