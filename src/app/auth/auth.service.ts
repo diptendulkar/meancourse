@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import {AuthDataModel} from './auth-data.model';
+import {environment} from 'src/environments/environment';
 
 @Injectable({providedIn: 'root'}) // to add the service/ Provider into app.module
 export class AuthService {
@@ -14,6 +15,8 @@ export class AuthService {
   private tokenTimer: any;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
+
+  private BACKEND_URL =  environment.apiUrl + "/user";
 
   constructor(private http: HttpClient, private router: Router){}
 
@@ -36,7 +39,7 @@ export class AuthService {
   createUser(email: string, password: string){
     const authData: AuthDataModel = {email: email, password: password};
 
-    this.http.post("http://localhost:3000/api/user/signup", authData)
+    this.http.post(this.BACKEND_URL + "/signup", authData)
     .subscribe( response => {
       //console.log(response);
       this.router.navigate(['/login']);  // redirecting to login page
@@ -49,7 +52,7 @@ export class AuthService {
   login(email: string, password: string){
     const authData: AuthDataModel = {email: email, password: password};
 
-    this.http.post("http://localhost:3000/api/user/login", authData)
+    this.http.post(this.BACKEND_URL + "/login", authData)
     .subscribe( (response: any) => {
       console.log( "new token :: " +response.token);
       const token = response.token;

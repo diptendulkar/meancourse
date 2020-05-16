@@ -1,9 +1,11 @@
 import {Post} from './post.model';
+
 import { Injectable } from '@angular/core';
 import {Subject, from} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({providedIn: 'root'}) // to add the service/ Provider into app.module
@@ -12,13 +14,15 @@ export class PostsService{
   private posts: Post[] =[];
   private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
 
+  private BACKEND_URL =  environment.apiUrl + "/posts/";
+
   constructor(private http: HttpClient, private  router: Router) {}
 
   // to fetch records from DB
   getPosts(postPerPage: number, currentPage: number){
     const queryParams = '?pagesize='+postPerPage+'&page='+currentPage;
 
-   this.http.get<{message: string, posts: any, maxPosts: number }>('http://localhost:3000/api/posts' + queryParams)
+   this.http.get<{message: string, posts: any, maxPosts: number }>(this.BACKEND_URL + queryParams)
 
    //Pipe map is used to map db '_id' column to model class 'id'
    .pipe(map(postData => {
@@ -48,7 +52,7 @@ export class PostsService{
 //fetch post based on id  from server
   getPost(id : string){
     return this.http.get<{_id: string, title: string, content: string,imagePath: string, creator: string} >
-    ('http://localhost:3000/api/posts/' + id);
+    (this.BACKEND_URL + id);
   }
 
   // to add records into DB
@@ -59,7 +63,7 @@ export class PostsService{
     postData.append("content", content);
     postData.append("image", image, title);
 
-    this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
+    this.http.post<{message: string, post: Post}>(this.BACKEND_URL, postData)
     .subscribe((responsedata) => {
       this.router.navigate(["/"]);
     });
@@ -85,7 +89,7 @@ updatePost(id: string, title : string, content: string, image: File | string){
    };
  }
   this.http
-      .put('http://localhost:3000/api/posts/' + id, postData)
+      .put(this.BACKEND_URL + id, postData)
       .subscribe( response => {
         this.router.navigate(["/"]);
       });
@@ -93,7 +97,7 @@ updatePost(id: string, title : string, content: string, image: File | string){
 
 
   deletePost(postId: string){
-    return this.http.delete('http://localhost:3000/api/posts/' + postId);
+    return this.http.delete(this.BACKEND_URL + postId);
 
   }
 
