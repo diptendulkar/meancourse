@@ -17,7 +17,7 @@ mongoose.connect("mongodb+srv://max:"+process.env.MONGO_ATLAS_PASSWORD+"@cluster
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended : false}));
-app.use("/images", express.static(path.join("backend/images")));
+app.use("/images", express.static(path.join("images")));
 // this is middleware
 app.use((req, res, next) => {
 
