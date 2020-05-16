@@ -17,8 +17,9 @@ mongoose.connect("mongodb+srv://max:"+process.env.MONGO_ATLAS_PASSWORD+"@cluster
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended : false}));
-app.use("/images", express.static(path.join("images")));
-// this is middleware
+app.use("/images", express.static(path.join(__dirname,"images"))); // this is backend
+app.use("/", express.static(path.join(__dirname, "angular-dist"))); // this for angular
+// this is CORS Hearders are required only if we host server and client seperately
 app.use((req, res, next) => {
 
   res.setHeader("Access-Control-Allow-Origin" , "*");
@@ -30,5 +31,10 @@ app.use((req, res, next) => {
 
 app.use("/api/posts",postsRoutes);
 app.use("/api/user",userRoutes);
+
+// backend + angular deployment
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "angular-dist", "index.html"));
+});
 
 module.exports = app;
