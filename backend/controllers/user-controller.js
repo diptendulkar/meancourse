@@ -54,7 +54,7 @@ MongoUser.findOne({ email: req.body.email})
         //console.log("fetchedUser: " + fetchedUser);
         const token = jwt.sign(
           {email: fetchedUser.email, userId: fetchedUser._id},
-          "diptendu_password", // secret private key
+          process.env.JWT_KEY, // secret private key
           {expiresIn: "1h"} // expires in one hour
           );
           //console.log("token = " + token);

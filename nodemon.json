@@ -1,0 +1,6 @@
+{
+  "env":{
+    "MONGO_ATLAS_PASSWORD" : "LafuODIwfWSStFBU",
+    "JWT_KEY" : "diptendu_password"
+  }
+}
